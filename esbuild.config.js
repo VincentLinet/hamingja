@@ -32,7 +32,6 @@ const ctx = await context({
   platform: "node",
   format: "cjs",
   sourcemap: isDev,
-  minify: !isDev,
   target: "node20",
 
   alias: {
