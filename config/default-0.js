@@ -1,3 +1,1 @@
-import "dotenv/config";
-
-module.exports = {};
+export default {};
