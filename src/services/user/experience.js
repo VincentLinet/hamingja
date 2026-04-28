@@ -77,6 +77,8 @@ export const history = async (interaction) => {
     if (!channel.isTextBased()) continue;
     if (!channel.viewable) continue;
 
+    const { name } = channel;
+
     let id = null;
     let done = false;
 
@@ -101,9 +103,10 @@ export const history = async (interaction) => {
       }
 
       id = messages.last().id;
-
       await new Promise((r) => setTimeout(r, 300));
     }
+
+    console.log(`Channel ${name} processed.`);
   }
 
   const users = Array.from(map.entries());
@@ -111,19 +114,24 @@ export const history = async (interaction) => {
   const list = await Rank.list();
 
   for (const [id, experience] of users) {
-    const member = await members.fetch(id);
+    const member = members.cache.get(id) ?? (await members.fetch(id).catch(() => null));
+    if (!member) continue;
+
+    const { displayName } = member;
+
     const { id: rank } = await Rank.floor(experience);
     const ranks = list.map(({ id }) => id);
-    console.log({ rank });
+
     await Role.swap(member, ranks, rank);
+
+    console.log(`${displayName}'s role swapped.`);
   }
+
+  console.log("Roles attributed.");
 
   await User.bulk(users);
 
   const duration = Time.format(Date.now() - start);
 
-  await interaction.followUp({
-    content: `Catch-up complete in ${duration}. The saga has been recorded.`,
-    flags: MessageFlags.Ephemeral
-  });
+  interaction.editReply(`Message history catch-up complete in ${duration}. The saga has been recorded.`);
 };

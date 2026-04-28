@@ -1,5 +1,4 @@
 export const add = (member, role) => {
-  console.log({ member, role });
   member.roles.add(role);
 };
 
