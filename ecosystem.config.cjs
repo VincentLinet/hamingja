@@ -5,7 +5,7 @@ module.exports = {
       script: "yarn",
       args: "launch",
       env: {
-        REACT_APP_ENV: "production",
+        NODE_ENV: "production",
         PORT: 3500
       }
     }
