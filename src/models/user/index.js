@@ -1,15 +1,19 @@
 import sql from "@/libs/database/sql";
 
-export const create = (id) => sql`INSERT IGNORE INTO user (id) VALUES (${id})`.execute();
+export const create = async (id) => sql`INSERT IGNORE INTO user (id) VALUES (${id})`.execute();
 
-export const bulk = (users) =>
+export const list = async () =>
+  sql` SELECT *
+    FROM user;`.execute();
+
+export const bulk = async (users) =>
   sql`
     INSERT INTO user (id, experience)
     $VALUES
     ON DUPLICATE KEY UPDATE
       experience = VALUES(experience);`.bulk(users);
 
-export const rank = (id) =>
+export const rank = async (id) =>
   sql`
     SELECT rank.id AS rank
     FROM user

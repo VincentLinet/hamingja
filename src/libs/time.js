@@ -6,3 +6,5 @@ export const format = (ms) => {
   if (minutes > 0) return `${minutes}m ${rest}s`;
   return `${rest}s`;
 };
+
+export const sleep = (ms = 300) => new Promise((r) => setTimeout(r, ms));

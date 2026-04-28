@@ -1,15 +1,15 @@
 import sql from "@/libs/database/sql";
 
-export const one = (id) =>
+export const one = async (id) =>
   sql`SELECT *
     FROM rank
     WHERE id = ${id};`.execute(([rank]) => rank);
 
-export const list = () =>
+export const list = async () =>
   sql`SELECT *
     FROM rank;`.execute();
 
-export const floor = (experience) =>
+export const floor = async (experience) =>
   sql`SELECT *
     FROM rank
     WHERE experience <= ${experience}

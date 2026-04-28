@@ -57,7 +57,7 @@ export const attribute = async (interaction) => {
 
 export const history = async (interaction) => {
   const { guild } = interaction;
-  const { channels, members } = guild;
+  const { channels } = guild;
   const { cache } = channels;
 
   const start = Date.now();
@@ -103,7 +103,7 @@ export const history = async (interaction) => {
       }
 
       id = messages.last().id;
-      await new Promise((r) => setTimeout(r, 300));
+      await Time.sleep();
     }
 
     console.log(`Channel ${name} processed.`);
@@ -111,27 +111,57 @@ export const history = async (interaction) => {
 
   const users = Array.from(map.entries());
 
-  const list = await Rank.list();
-
-  for (const [id, experience] of users) {
-    const member = members.cache.get(id) ?? (await members.fetch(id).catch(() => null));
-    if (!member) continue;
-
-    const { displayName } = member;
-
-    const { id: rank } = await Rank.floor(experience);
-    const ranks = list.map(({ id }) => id);
-
-    await Role.swap(member, ranks, rank);
-
-    console.log(`${displayName}'s role swapped.`);
-  }
-
-  console.log("Roles attributed.");
-
   await User.bulk(users);
 
   const duration = Time.format(Date.now() - start);
 
   interaction.editReply(`Message history catch-up complete in ${duration}. The saga has been recorded.`);
+};
+
+export const promote = async (interaction) => {
+  const { client, guild } = interaction;
+  const { members } = guild;
+
+  const start = Date.now();
+
+  await interaction.reply({
+    content: "Updating roles from stored experience...",
+    flags: MessageFlags.Ephemeral
+  });
+
+  const users = await User.list();
+
+  const list = await Rank.list();
+  const ranks = list.map(({ id }) => id);
+
+  for (const { id, experience } of users) {
+    const member = members.cache.get(id) ?? (await members.fetch(id).catch(() => null));
+
+    if (!member) {
+      const { users } = client;
+      const { username } = await users.fetch(id);
+      console.log(`Member not found: ${username} ${id}`);
+      continue;
+    }
+
+    const { displayName } = member;
+
+    const { id: rank, title } = await Rank.floor(experience);
+
+    const held = ranks.find((rank) => member.roles.cache.has(rank));
+
+    if (held === rank) {
+      console.log(`Promotion skipped for ${displayName}: ${rank} to ${held}`);
+      continue;
+    }
+
+    await Role.swap(member, ranks, rank);
+
+    console.log(`${displayName}'s role updated to ${title}.`);
+    await Time.sleep();
+  }
+
+  const duration = Time.format(Date.now() - start);
+
+  await interaction.editReply(`Promotion sync complete in ${duration}.`);
 };
