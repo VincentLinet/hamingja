@@ -14,6 +14,8 @@ const { experience } = config;
 
 const { MessageFlags } = Discord;
 
+const { IMMORTALS } = process.env;
+
 const image = () => 5;
 const emoji = () => 1;
 const text = ({ content }) => Math.ceil((content.length + 1) / 10);
@@ -56,11 +58,13 @@ export const attribute = async (interaction) => {
 };
 
 export const history = async (interaction) => {
-  const { guild } = interaction;
+  const { guild, user } = interaction;
   const { channels } = guild;
   const { cache } = channels;
 
   const start = Date.now();
+
+  console.log("Scanning message history... this may take a while.");
 
   await interaction.reply({
     content: "Scanning message history... this may take a while.",
@@ -115,15 +119,17 @@ export const history = async (interaction) => {
 
   const duration = Time.format(Date.now() - start);
 
-  interaction.editReply(`Message history catch-up complete in ${duration}. The saga has been recorded.`);
+  console.log(`Message history catch-up complete in ${duration}. The saga has been recorded.`);
+  user.send(`Message history catch-up complete in ${duration}. The saga has been recorded.`);
 };
 
 export const promote = async (interaction) => {
-  const { client, guild } = interaction;
+  const { client, guild, user } = interaction;
   const { members } = guild;
 
   const start = Date.now();
 
+  console.log("Updating roles from stored experience...");
   await interaction.reply({
     content: "Updating roles from stored experience...",
     flags: MessageFlags.Ephemeral
@@ -146,6 +152,11 @@ export const promote = async (interaction) => {
 
     const { displayName } = member;
 
+    if (IMMORTALS.split(",").includes(id)) {
+      console.log(`Change prevented for ${displayName}.`);
+      continue;
+    }
+
     const { id: rank, title } = await Rank.floor(experience);
 
     const held = ranks.find((rank) => member.roles.cache.has(rank));
@@ -163,5 +174,6 @@ export const promote = async (interaction) => {
 
   const duration = Time.format(Date.now() - start);
 
-  await interaction.editReply(`Promotion sync complete in ${duration}.`);
+  console.log(`Promotion sync complete in ${duration}.`);
+  await user.send(`Promotion sync complete in ${duration}.`);
 };

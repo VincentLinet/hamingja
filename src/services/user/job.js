@@ -101,8 +101,9 @@ export const chose = async (interaction) => {
       const { id, title: path, long } = classes[job];
       const title = await pattern("accepted");
       const description = await pattern("accept", { path, long, user: display });
+      const list = classes.map(({ id }) => id);
+      await Role.swap(member, list, id);
       await interaction.update(Message.build({ title, description, components: [] }));
-      await Role.add(member, id);
     }
     if (customId === "back") {
       await selection(interaction, classes);
