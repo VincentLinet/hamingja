@@ -25,7 +25,7 @@ const pattern = (...args) => Pattern.build(context, ...args);
 const options = ({ title, short }, index) =>
   new Discord.StringSelectMenuOptionBuilder().setLabel(title).setDescription(short).setValue(`${index}`);
 
-const selection = async (interaction, classes, mode = "edition") => {
+const selection = async (interaction, classes, channel, mode = "edition") => {
   const title = await pattern("title");
   const description = await pattern("description");
   const select = new Discord.StringSelectMenuBuilder()
@@ -42,8 +42,9 @@ const selection = async (interaction, classes, mode = "edition") => {
     new Discord.ActionRowBuilder().addComponents(refuse)
   ];
   const content = Message.build({ title, description, components });
-  if (mode === "creation") return interaction.reply({ ...content, flags: MessageFlags.Ephemeral });
-  return interaction.update({ ...content, flags: MessageFlags.Ephemeral });
+  if (mode === "edition") return interaction.update({ ...content, flags: MessageFlags.Ephemeral });
+  if (channel) return channel.send(content);
+  return interaction.reply({ ...content, flags: MessageFlags.Ephemeral });
 };
 
 const refusal = async (interaction) => {
@@ -52,7 +53,7 @@ const refusal = async (interaction) => {
   await interaction.update(Message.build({ title, description, components: [] }));
 };
 
-export const chose = async (interaction) => {
+export const chose = async (interaction, direct) => {
   const { author = {}, member } = interaction;
   const { displayName } = member;
   const { username } = author;
@@ -61,7 +62,9 @@ export const chose = async (interaction) => {
 
   let job = null;
 
-  const response = await selection(interaction, classes, "creation");
+  const dm = !direct && (await member.createDM());
+
+  const response = await selection(interaction, classes, dm, "creation");
 
   Collector.select = response.createMessageComponentCollector({ componentType: StringSelect, IDLE });
   Collector.button = response.createMessageComponentCollector({ componentType: Button, IDLE });
@@ -125,5 +128,5 @@ export const manual = async (interaction) => {
   const content = await pattern("inexperienced");
   const inexperienced = { content, flags: MessageFlags.Ephemeral };
   if (current < experience) return interaction.reply(inexperienced);
-  await chose(interaction);
+  await chose(interaction, true);
 };
