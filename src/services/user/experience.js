@@ -52,9 +52,10 @@ export const attribute = async (interaction) => {
   await increase(id, growth, cooldown);
   const stated = await get(id);
 
-  const { id: candidate } = await Rank.floor(stated);
+  const candidate = await Rank.floor(stated);
+  const { id: superior } = candidate;
 
-  if (candidate !== rank) await Rank.promote(interaction, rank, candidate);
+  if (superior !== rank) await Rank.promote(interaction, rank, candidate);
 };
 
 export const history = async (interaction) => {
