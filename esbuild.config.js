@@ -45,7 +45,7 @@ const ctx = await context({
     "@/services": path.resolve(__dirname, "src/services"),
     "@/templates": path.resolve(__dirname, "src/templates")
   },
-
+  external: ["@napi-rs/canvas", "@napi-rs/canvas-darwin-arm64"],
   plugins: [log]
 });
 

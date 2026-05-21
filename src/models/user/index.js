@@ -2,6 +2,11 @@ import sql from "@/libs/database/sql";
 
 export const create = async (id) => sql`INSERT IGNORE INTO user (id) VALUES (${id})`.execute();
 
+export const one = async (id) =>
+  sql` SELECT *
+    FROM user
+    WHERE id = ${id};`.execute(([user]) => user);
+
 export const list = async () =>
   sql` SELECT *
     FROM user;`.execute();

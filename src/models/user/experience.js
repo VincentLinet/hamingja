@@ -15,3 +15,13 @@ export const get = async (id) =>
   sql`SELECT experience
       FROM user
       WHERE id = ${id};`.execute(([{ experience }]) => experience);
+
+export const leaderboard = async (id) =>
+  sql`SELECT rank
+    FROM (
+        SELECT
+            id,
+            DENSE_RANK() OVER (ORDER BY experience DESC) AS rank
+        FROM user
+    ) ranked
+    WHERE id = ${id};`.execute(([{ rank }]) => rank);

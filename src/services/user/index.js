@@ -8,6 +8,10 @@ export const list = async () => {
   return Models.list();
 };
 
+export const one = async (id) => {
+  return Models.one(id);
+};
+
 export const rank = async (id) => {
   return Models.rank(id);
 };

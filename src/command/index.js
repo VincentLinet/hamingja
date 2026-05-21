@@ -1,10 +1,17 @@
 import * as Discord from "discord.js";
+import * as Canvas from "@napi-rs/canvas";
+
 import * as Errors from "@/core/errors";
 import * as Commands from "@/commands";
 import * as Events from "@/events";
 
 const { GatewayIntentBits } = Discord;
 const { Guilds, GuildMessages, MessageContent } = GatewayIntentBits;
+const { GlobalFonts } = Canvas;
+
+GlobalFonts.registerFromPath("assets/fonts/NotoSans-Regular.ttf", "NotoSans");
+GlobalFonts.registerFromPath("assets/fonts/NotoSans-Bold.ttf", "NotoSansBold");
+GlobalFonts.registerFromPath("assets/fonts/NotoSans-ExtraBold.ttf", "NotoSansExtraBold");
 
 const intents = [Guilds, GuildMessages, MessageContent];
 const Client = new Discord.Client({ intents });

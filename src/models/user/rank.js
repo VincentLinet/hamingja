@@ -7,7 +7,7 @@ export const one = async (id) =>
 
 export const list = async () =>
   sql`SELECT *
-    FROM rank;`.execute();
+    FROM rank ORDER BY experience ASC;`.execute();
 
 export const floor = async (experience) =>
   sql`SELECT *

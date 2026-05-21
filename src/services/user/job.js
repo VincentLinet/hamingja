@@ -53,6 +53,10 @@ const refusal = async (interaction) => {
   await interaction.update(Message.build({ title, description, components: [] }));
 };
 
+export const list = async () => {
+  return Models.list();
+};
+
 export const chose = async (interaction, direct) => {
   const { author = {}, member } = interaction;
   const { displayName } = member;

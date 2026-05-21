@@ -36,6 +36,10 @@ export const get = (id) => {
   return Models.get(id);
 };
 
+export const leaderboard = (id) => {
+  return Models.leaderboard(id);
+};
+
 export const attribute = async (interaction) => {
   const { author } = interaction;
   const { id, bot } = author;
