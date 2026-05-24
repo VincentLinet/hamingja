@@ -51,7 +51,7 @@ export const individual = async (interaction) => {
   const { experience, ...rest } = await User.one(id);
   const leaderboard = await Experience.leaderboard(id);
 
-  const level = current.experience === 0 ? experience : experience % +current.experience;
+  const level = current.experience === 0 ? experience : experience - +current.experience;
   const previous = next.experience - current.experience;
   const progress = previous === 0 ? 500 : Math.min(Math.max(Math.ceil((+level / +previous) * 500), 30), 500);
   const text = previous === 0 ? "Max" : `${level} / ${previous} XP`;

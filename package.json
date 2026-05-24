@@ -7,7 +7,6 @@
     "start": "nodemon dist/main.cjs",
     "build": "node esbuild.config.js",
     "dev": "NODE_ENV=development yarn build & yarn start",
-    "launch": "NODE_ENV=production yarn build & yarn start",
     "refresh": "yarn build && node dist/scripts/commands/refresh.cjs"
   },
   "dependencies": {
