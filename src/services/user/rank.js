@@ -31,9 +31,14 @@ export const floor = async (current) => {
   return Models.floor(current);
 };
 
+const truncate = (text, ctx) =>
+  Array.from(text).findIndex((_, index) => ctx.measureText(`${text.slice(0, index + 1)}...`).width > 450);
+
 export const individual = async (interaction) => {
-  const { member, guild } = interaction;
+  const { member, guild, options } = interaction;
   const { id, roles, displayName } = member;
+
+  const show = options.getBoolean("public") ?? false;
 
   const ranks = await list();
   const jobs = await Job.list();
@@ -90,7 +95,11 @@ export const individual = async (interaction) => {
   ctx.font = "36px NotoSansBold";
   ctx.textAlign = "left";
 
-  ctx.fillText(displayName, 240, 90);
+  const cutoff = truncate(displayName, ctx);
+
+  const username = cutoff === -1 ? displayName : `${displayName.slice(0, Math.max(0, cutoff - 1))}...`;
+
+  ctx.fillText(username, 240, 90);
 
   // Leaderboard
   ctx.font = "36px NotoSans";
@@ -153,7 +162,7 @@ export const individual = async (interaction) => {
 
   await interaction.reply({
     files: [attachment],
-    flags: MessageFlags.Ephemeral
+    flags: show ? undefined : MessageFlags.Ephemeral
   });
 };
 
