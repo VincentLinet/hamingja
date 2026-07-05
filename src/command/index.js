@@ -5,16 +5,17 @@ import * as Errors from "@/core/errors";
 import * as Commands from "@/commands";
 import * as Events from "@/events";
 
-const { GatewayIntentBits } = Discord;
-const { Guilds, GuildMessages, MessageContent } = GatewayIntentBits;
+const { GatewayIntentBits, Partials } = Discord;
+const { Guilds, GuildMembers, GuildMessages, GuildPresences, MessageContent, GuildVoiceStates } = GatewayIntentBits;
 const { GlobalFonts } = Canvas;
 
 GlobalFonts.registerFromPath("assets/fonts/NotoSans-Regular.ttf", "NotoSans");
 GlobalFonts.registerFromPath("assets/fonts/NotoSans-Bold.ttf", "NotoSansBold");
 GlobalFonts.registerFromPath("assets/fonts/NotoSans-ExtraBold.ttf", "NotoSansExtraBold");
 
-const intents = [Guilds, GuildMessages, MessageContent];
-const Client = new Discord.Client({ intents });
+const intents = [Guilds, GuildMembers, GuildMessages, GuildPresences, MessageContent, GuildVoiceStates];
+const partials = [Partials.Message, Partials.Channel];
+const Client = new Discord.Client({ intents, partials });
 
 Client.commands = new Discord.Collection();
 

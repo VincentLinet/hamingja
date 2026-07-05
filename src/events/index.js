@@ -1,3 +1,9 @@
 export { default as interaction } from "./interaction";
 export { default as ready } from "./ready";
 export { default as message } from "./message";
+export { default as removal } from "./removal";
+export { default as update } from "./update";
+export { default as withdrawal } from "./withdrawal";
+export { default as join } from "./join";
+export { default as mute } from "./mute";
+export { default as voice } from "./voice";
