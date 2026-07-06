@@ -1,11 +1,13 @@
 import { Events } from "discord.js";
 import * as Errors from "@/core/errors";
+import * as Report from "@/services/report";
 
 const name = Events.InteractionCreate;
 const kind = "on";
 
 const execute = async (interaction) => {
-  if (!interaction.isChatInputCommand() && !interaction.isAutocomplete()) return;
+  if (interaction.isModalSubmit() && interaction.customId.startsWith("report")) return Report.submit(interaction);
+  if (!interaction.isChatInputCommand() && !interaction.isAutocomplete() && !interaction.isUserContextMenuCommand() && !interaction.isMessageContextMenuCommand()) return;
 
   const { client, commandName: name } = interaction;
 

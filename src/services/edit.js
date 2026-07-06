@@ -1,13 +1,19 @@
 import * as Edit from "@/templates/edit";
 
-const { LOG_MESSAGES } = process.env;
+const { LOG_MESSAGES, INVINCIBLES } = process.env;
+
+const invincibles = INVINCIBLES?.split(",") ?? [];
 
 export const execute = async (message, update) => {
-  if (!update.editedAt) return;
-  if (update.author?.bot) return;
-  if (!update.guild) return;
+  const { editedAt, author, guild, member } = update;
+  if (!editedAt) return;
+  if (author?.bot) return;
+  if (!guild) return;
 
-  const channel = update.guild.channels.cache.get(LOG_MESSAGES);
+  const invincible = member?.roles.cache.some(({ id }) => invincibles.includes(id));
+  if (invincible) return;
+
+  const channel = guild.channels.cache.get(LOG_MESSAGES);
   if (!channel) return;
 
   await channel.send(Edit.message(message, update));
