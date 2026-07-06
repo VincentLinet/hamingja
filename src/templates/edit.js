@@ -4,7 +4,7 @@ import * as Time from "@/libs/time";
 const color = 0xf39c12;
 
 export const message = (original, updated) => {
-  const { member, author, id: messageId, guild, channelId } = updated;
+  const { member, author, id: messageId, guild, channelId, attachments } = updated;
   const displayName = member?.displayName ?? author?.username ?? "Unknown";
   const avatarURL = author?.displayAvatarURL?.();
 
@@ -15,10 +15,12 @@ export const message = (original, updated) => {
   const messageUrl = `https://discord.com/channels/${guild.id}/${channelId}/${messageId}`;
 
   const embed = avatarURL ? { name: displayName, icon_url: avatarURL } : { name: displayName };
+  const attachmentField = Message.attachmentsField(attachments);
 
   return Message.build({
     color,
     author: embed,
+    image: Message.attachmentsPreview(attachments),
     footer: { text: "Message Edited" },
     fields: [
       { name: "Channel", value: `<#${channelId}>`, inline: false },
@@ -27,6 +29,7 @@ export const message = (original, updated) => {
       { name: "Elapsed", value: elapsed, inline: true },
       { name: "Original", value: original.content ?? "*unavailable*", inline: false },
       { name: "Updated", value: `[View message](${messageUrl})\n${updated.content}`, inline: false },
+      ...(attachmentField ? [attachmentField] : []),
     ],
   });
 };

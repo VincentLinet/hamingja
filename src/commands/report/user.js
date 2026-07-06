@@ -1,0 +1,13 @@
+import * as Discord from "discord.js";
+import * as Report from "@/services/report";
+
+const data = new Discord.ContextMenuCommandBuilder()
+  .setName("Report to Shieldwall")
+  .setType(Discord.ApplicationCommandType.User)
+  .setContexts(Discord.InteractionContextType.Guild);
+
+const execute = async (interaction) => {
+  if (interaction.isUserContextMenuCommand()) Report.open(interaction, { user: interaction.targetUser });
+};
+
+export default { data, execute };

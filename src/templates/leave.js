@@ -24,7 +24,7 @@ export const message = (member) => {
       },
       {
         name: "Joined server",
-        value: `<t:${Time.standardize(joined)}:F> (<t:${Time.standardize(joined)}:R>)`,
+        value: joined ? `<t:${Time.standardize(joined)}:F> (<t:${Time.standardize(joined)}:R>)` : "unknown",
         inline: false,
       },
       {

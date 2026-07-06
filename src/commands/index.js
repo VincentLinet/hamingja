@@ -4,3 +4,6 @@ export { default as history } from "./history";
 export { default as promote } from "./promote";
 export { default as me } from "./me";
 export { default as roll } from "./roll";
+export { default as report } from "./report/command";
+export { default as reportUser } from "./report/user";
+export { default as reportMessage } from "./report/message";

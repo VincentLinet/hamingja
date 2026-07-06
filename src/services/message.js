@@ -48,6 +48,17 @@ export const image = ({ attachments, stickers, embeds }) => {
   return false;
 };
 
+export const attachmentsField = (attachments) => {
+  if (!attachments?.size) return null;
+  const value = [...attachments.values()].map(({ name, url }) => `[${name}](${url})`).join("\n");
+  return { name: "Attachments", value, inline: false };
+};
+
+export const attachmentsPreview = (attachments) => {
+  const image = [...(attachments?.values() ?? [])].find(({ contentType }) => contentType?.startsWith("image/"));
+  return image ? { url: image.url } : undefined;
+};
+
 export const kind = (message) => {
   if (image(message)) return "image";
   if (emoji(message)) return "emoji";
