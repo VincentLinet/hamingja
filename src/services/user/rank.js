@@ -75,6 +75,7 @@ export const individual = async (interaction) => {
   // User avatar
   const avatarURL = interaction.user.displayAvatarURL({
     extension: "png",
+    forceStatic: true,
     size: 256
   });
 
