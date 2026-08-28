@@ -8,7 +8,8 @@ const invincibles = INVINCIBLES?.split(",") ?? [];
 const color = 0x2ecc71;
 
 const invitation = (invite, inviter) => {
-  if (!invite.inviter) return "Unknown";
+  if (invite?.vanity) return "Vanity URL";
+  if (!invite?.inviter) return "Unknown";
   const invincible = inviter?.roles.cache.some(({ id }) => invincibles.includes(id));
   return invincible ? (inviter?.displayName ?? invite.inviter.username) : `<@${invite.inviter.id}>`;
 };

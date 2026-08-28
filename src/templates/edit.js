@@ -13,6 +13,7 @@ export const message = (original, updated) => {
   const sentAt = original.createdAt ? `<t:${Time.standardize(original.createdAt)}:f>` : "unknown";
   const editedAt = `<t:${Time.standardize(edition)}:f>`;
   const messageUrl = `https://discord.com/channels/${guild.id}/${channelId}/${messageId}`;
+  const fallback = `Text too long. [View message](${messageUrl})`;
 
   const embed = avatarURL ? { name: displayName, icon_url: avatarURL } : { name: displayName };
   const attachmentField = Message.attachmentsField(attachments);
@@ -27,8 +28,8 @@ export const message = (original, updated) => {
       { name: "Sent", value: sentAt, inline: true },
       { name: "Edited", value: editedAt, inline: true },
       { name: "Elapsed", value: elapsed, inline: true },
-      { name: "Original", value: original.content ?? "*unavailable*", inline: false },
-      { name: "Updated", value: `[View message](${messageUrl})\n${updated.content}`, inline: false },
+      { name: "Original", value: Message.field(original.content ?? "*unavailable*", fallback), inline: false },
+      { name: "Updated", value: Message.field(`[View message](${messageUrl})\n${updated.content}`, fallback), inline: false },
       ...(attachmentField ? [attachmentField] : []),
     ],
   });

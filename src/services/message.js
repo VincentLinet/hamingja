@@ -12,6 +12,7 @@
 
 const CUSTOM_EMOJI_REGEX = /^<a?:\w+:\d+>+$/;
 const UNICODE_EMOJI_REGEX = /^[\p{Extended_Pictographic}\u200d]+$/u;
+const MAXIMUM = 1024;
 
 export const build = ({ components, ...props }) => {
   const embed = { ...props, timestamp: new Date().toISOString() };
@@ -47,6 +48,8 @@ export const image = ({ attachments, stickers, embeds }) => {
 
   return false;
 };
+
+export const field = (value, fallback) => (value.length <= MAXIMUM ? value : fallback);
 
 export const attachmentsField = (attachments) => {
   if (!attachments?.size) return null;

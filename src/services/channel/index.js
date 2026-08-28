@@ -1,7 +1,9 @@
-const { TRAP, INVINCIBLES } = process.env;
+import * as Removal from "@/templates/removal";
+
+const { TRAP, INVINCIBLES, LOG_MODERATION } = process.env;
 
 export const trap = (message) => {
-  const { channelId, deletable, member = {} } = message;
+  const { channelId, deletable, member = {}, guild } = message;
   const { bannable } = member;
 
   if (channelId != TRAP) return;
@@ -14,4 +16,7 @@ export const trap = (message) => {
 
   if (deletable) message.delete();
   if (bannable) member.ban({ deleteMessageSeconds: 60 * 3, reason: "Fell in the bot trap (Shame 🫵)." });
+
+  const channel = guild?.channels.cache.get(LOG_MODERATION);
+  if (channel) channel.send(Removal.moderated(message, "Trap"));
 };
