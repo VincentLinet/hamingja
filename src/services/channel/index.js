@@ -1,18 +1,14 @@
 import * as Removal from "@/templates/removal";
+import * as Role from "@/services/user/role";
 
-const { TRAP, INVINCIBLES, LOG_MODERATION } = process.env;
+const { TRAP, LOG_MODERATION } = process.env;
 
 export const trap = (message) => {
   const { channelId, deletable, member = {}, guild } = message;
   const { bannable } = member;
 
   if (channelId != TRAP) return;
-
-  const { roles } = member;
-
-  const excluded = roles.cache.some(({ id }) => INVINCIBLES.includes(id));
-
-  if (excluded) return;
+  if (Role.shield(member)) return;
 
   if (deletable) message.delete();
   if (bannable) member.ban({ deleteMessageSeconds: 60 * 3, reason: "Fell in the bot trap (Shame 🫵)." });

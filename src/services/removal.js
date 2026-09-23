@@ -1,9 +1,8 @@
 import { AuditLogEvent } from "discord.js";
 import * as Removal from "@/templates/removal";
+import * as Role from "@/services/user/role";
 
-const { LOG_MESSAGES, LOG_MODERATION, INVINCIBLES } = process.env;
-
-const invincibles = INVINCIBLES?.split(",") ?? [];
+const { LOG_MESSAGES, LOG_MODERATION } = process.env;
 
 const analyze = async (message) => {
   const { guild, author } = message;
@@ -26,8 +25,7 @@ export const execute = async (message) => {
   if (author?.bot) return;
   if (!guild) return;
 
-  const invincible = member?.roles.cache.some(({ id }) => invincibles.includes(id));
-  if (invincible) return;
+  if (Role.shield(member)) return;
 
   const deleter = await analyze(message);
 

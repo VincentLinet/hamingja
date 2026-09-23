@@ -1,3 +1,11 @@
+const { INVINCIBLES } = process.env;
+
+const invincibles = INVINCIBLES?.split(",") ?? [];
+
+export const shield = (member) => {
+  return member?.roles.cache.some(({ id }) => invincibles.includes(id)) ?? false;
+};
+
 export const add = (member, role) => {
   member.roles.add(role);
 };

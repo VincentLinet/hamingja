@@ -2,6 +2,7 @@ import { Events, ChannelType } from "discord.js";
 import * as Experience from "@/services/user/experience";
 import * as Channel from "@/services/channel";
 import * as Private from "@/services/private";
+import * as Hamingja from "@/services/hamingja";
 
 const name = Events.MessageCreate;
 const kind = "on";
@@ -13,6 +14,7 @@ const execute = async (message) => {
   if (type === ChannelType.DM) return;
   Experience.attribute(message);
   Channel.trap(message);
+  Hamingja.answer(message);
 };
 
 const event = { name, kind, execute };

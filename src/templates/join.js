@@ -1,17 +1,15 @@
 import * as Message from "@/services/message";
 import * as Time from "@/libs/time";
+import * as Role from "@/services/user/role";
 
-const { INVITE, INVINCIBLES } = process.env;
-
-const invincibles = INVINCIBLES?.split(",") ?? [];
+const { INVITE } = process.env;
 
 const color = 0x2ecc71;
 
 const invitation = (invite, inviter) => {
   if (invite?.vanity) return "Vanity URL";
   if (!invite?.inviter) return "Unknown";
-  const invincible = inviter?.roles.cache.some(({ id }) => invincibles.includes(id));
-  return invincible ? (inviter?.displayName ?? invite.inviter.username) : `<@${invite.inviter.id}>`;
+  return Role.shield(inviter) ? (inviter?.displayName ?? invite.inviter.username) : `<@${invite.inviter.id}>`;
 };
 
 export const message = (member, invite = null, inviter = null) => {
