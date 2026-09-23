@@ -169,7 +169,7 @@ const ACTIONS = [
   "Hamingja splashes straight through your reflection in the puddle, shattering it into a hundred ripples.",
   "A small twig, whittled smooth by no tool anyone owns, sits balanced on your knee.",
   "Hamingja eyes the fire, eyes you, and hops directly between the two like a small, feathered dare.",
-  "You find your ribbon knotted, oddly precise, around a low branch, as if tied there on purpose.",
+  "You find your ribbon knotted, oddly precise, around a low branch, as if tied there on purpose, haloed with a dusty purple mist.",
   "Hamingja drags a beetle shell across the dirt, abandons it, and steals your attention instead.",
   "A wet feather lands on your book, and when you look up, the sky above is completely clear.",
   "Hamingja perches on the rim of the well, drops a pebble in, and waits, unblinking, for the sound.",

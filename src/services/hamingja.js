@@ -10,7 +10,7 @@ export const answer = async (message) => {
   const { user } = client;
 
   if (bot || everyone) return;
-  if (!mentions.has(user)) return;
+  if (!mentions.has(user, { ignoreRepliedUser: true })) return;
   if (Role.shield(member)) return;
 
   await message.reply(`*${pick()}*`);
