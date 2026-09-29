@@ -1,17 +1,24 @@
-import ACTIONS from "@/messages/hamingja";
+import * as Action from "@/messages/hamingja";
 import * as Role from "@/services/user/role";
 
-const pick = () => ACTIONS[Math.floor(Math.random() * ACTIONS.length)];
+const { CACTI } = process.env;
+
+const pick = (pool) => pool[Math.floor(Math.random() * pool.length)];
 
 export const answer = async (message) => {
   const { author, mentions, client, member } = message;
-  const { bot } = author;
+  const { bot, id } = author;
   const { everyone } = mentions;
   const { user } = client;
 
   if (bot || everyone) return;
   if (!mentions.has(user, { ignoreRepliedUser: true })) return;
-  if (Role.shield(member)) return;
 
-  await message.reply(`*${pick()}*`);
+  const cacti = id === CACTI;
+
+  if (!cacti && Role.shield(member)) return;
+
+  const pool = cacti ? Action.Cacti : Action.Members;
+
+  await message.reply(`*${pick(pool)}*`);
 };
