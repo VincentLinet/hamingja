@@ -1,5 +1,5 @@
 import * as Base from "@/templates/base";
-import Data from "@/messages/job";
+import Data from "@/messages/job/english";
 
 const color = 0x0099ff;
 

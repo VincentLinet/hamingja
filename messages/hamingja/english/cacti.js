@@ -30,6 +30,8 @@ const ACTIONS = [
   "You find your axe's stone-grained wood gouged with small, deliberate claw marks between the bindings of bone, a signature no one asked for.",
   "Hamingja taps their beak against the axe, unable to decide if it's stone or wood underneath, and settles for stealing the bone fittings instead.",
   "You speak before the assembly, grave and measured, and Hamingja echoes your last words back in a pitch-perfect mockery of your own voice, ruining the gravity of the moment entirely.",
+  "Hamingja hangs from a single braid of your beard, swinging gently, entirely unconcerned with the dignity of the arrangement.",
+  "You find a bead threaded into your beard that isn't yours, and Hamingja perched nearby looking far too proud of the craftsmanship.",
 ];
 
 export default ACTIONS;

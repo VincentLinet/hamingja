@@ -14,6 +14,7 @@ const execute = async (message) => {
   if (type === ChannelType.DM) return;
   Experience.attribute(message);
   Channel.trap(message);
+  Channel.limit(message);
   Hamingja.answer(message);
 };
 

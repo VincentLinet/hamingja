@@ -4,6 +4,7 @@ import * as Canvas from "@napi-rs/canvas";
 import * as Models from "@/models/user/rank";
 import * as Role from "@/services/user/role";
 import * as Job from "@/services/user/job";
+import * as Locale from "@/services/locale";
 import * as Strings from "@/services/strings";
 import * as User from "@/services/user";
 import * as Experience from "@/services/user/experience";
@@ -35,13 +36,13 @@ const truncate = (text, ctx) =>
   Array.from(text).findIndex((_, index) => ctx.measureText(`${text.slice(0, index + 1)}...`).width > 450);
 
 export const individual = async (interaction) => {
-  const { member, guild, options } = interaction;
+  const { member, guild, options, channelId: channel } = interaction;
   const { id, roles, displayName } = member;
 
   const show = options.getBoolean("public") ?? false;
 
   const ranks = await list();
-  const jobs = await Job.list();
+  const jobs = await Job.list(Locale.of(channel));
 
   const cursor = Math.max(
     0,

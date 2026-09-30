@@ -3,6 +3,7 @@ import * as Discord from "discord.js";
 import * as Models from "@/models/user/job";
 import * as Message from "@/templates/job";
 import * as Pattern from "@/services/pattern";
+import * as Locale from "@/services/locale";
 import * as Role from "@/services/user/role";
 import * as Experience from "@/services/user/experience";
 import * as Rank from "@/services/user/rank";
@@ -19,15 +20,14 @@ const IDLE = 120_000;
 
 const Collector = {};
 
-const context = ["job"];
-const pattern = (...args) => Pattern.build(context, ...args);
+const pattern = (interaction, name, injections) => Pattern.build(["job", Locale.of(interaction.channelId)], name, injections);
 
 const options = ({ title, short }, index) =>
   new Discord.StringSelectMenuOptionBuilder().setLabel(title).setDescription(short).setValue(`${index}`);
 
 const selection = async (interaction, classes, channel, mode = "edition") => {
-  const title = await pattern("title");
-  const description = await pattern("description");
+  const title = await pattern(interaction, "title");
+  const description = await pattern(interaction, "description");
   const select = new Discord.StringSelectMenuBuilder()
     .setCustomId("job")
     .setPlaceholder("Class...")
@@ -48,21 +48,21 @@ const selection = async (interaction, classes, channel, mode = "edition") => {
 };
 
 const refusal = async (interaction) => {
-  const title = await pattern("title");
-  const description = await pattern("refusal");
+  const title = await pattern(interaction, "title");
+  const description = await pattern(interaction, "refusal");
   await interaction.update(Message.build({ title, description, components: [] }));
 };
 
-export const list = async () => {
-  return Models.list();
+export const list = async (locale) => {
+  return Models.list(locale);
 };
 
 export const chose = async (interaction, direct) => {
-  const { author = {}, member } = interaction;
+  const { author = {}, member, channelId: channel } = interaction;
   const { displayName } = member;
   const { username } = author;
   const display = displayName || username;
-  const classes = await Models.list();
+  const classes = await Models.list(Locale.of(channel));
 
   let job = null;
 
@@ -106,8 +106,8 @@ export const chose = async (interaction, direct) => {
     const { customId } = interaction;
     if (customId === "accept") {
       const { id, title: path, long } = classes[job];
-      const title = await pattern("accepted");
-      const description = await pattern("accept", { path, long, user: display });
+      const title = await pattern(interaction, "accepted");
+      const description = await pattern(interaction, "accept", { path, long, user: display });
       const list = classes.map(({ id }) => id);
       await Role.swap(member, list, id);
       await interaction.update(Message.build({ title, description, components: [] }));
@@ -129,7 +129,7 @@ export const manual = async (interaction) => {
 
   const current = await Experience.get(id);
   const { experience } = await Rank.one(choice);
-  const content = await pattern("inexperienced");
+  const content = await pattern(interaction, "inexperienced");
   const inexperienced = { content, flags: MessageFlags.Ephemeral };
   if (current < experience) return interaction.reply(inexperienced);
   await chose(interaction, true);
