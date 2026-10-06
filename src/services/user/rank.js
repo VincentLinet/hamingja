@@ -74,13 +74,20 @@ export const individual = async (interaction) => {
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   // User avatar
-  const avatarURL = interaction.user.displayAvatarURL({
+  const avatarURL = member.displayAvatarURL({
     extension: "png",
     forceStatic: true,
     size: 256
   });
 
   const avatar = await Canvas.loadImage(avatarURL);
+
+  // Avatar decoration
+  const decorationURL = member.displayAvatarDecorationURL();
+
+  const decoration = decorationURL
+    ? await Canvas.loadImage(`${decorationURL}?size=256&passthrough=false`).catch(() => null)
+    : null;
 
   // Circle avatar
   ctx.save();
@@ -91,6 +98,9 @@ export const individual = async (interaction) => {
 
   ctx.drawImage(avatar, 45, 45, 160, 160);
   ctx.restore();
+
+  // Decoration overflows the avatar by 20% like on Discord
+  if (decoration) ctx.drawImage(decoration, 29, 29, 192, 192);
 
   // Username
   ctx.fillStyle = "#ffffff";
