@@ -3,6 +3,7 @@ import "dotenv/config";
 import * as Discord from "discord.js";
 import * as Errors from "@/core/errors";
 import * as Commands from "@/commands/index";
+import * as Time from "@/libs/time";
 
 const { TOKEN, CLIENT, GUILD } = process.env;
 
@@ -24,11 +25,11 @@ const rest = new Discord.REST().setToken(TOKEN);
 
 (async () => {
   try {
-    console.log(`Started refreshing ${commands.length} application (/) commands.`);
+    console.log(`${Time.stamp()} Started refreshing ${commands.length} application (/) commands.`);
 
     const data = await rest.put(Discord.Routes.applicationGuildCommands(CLIENT, GUILD), { body: commands });
 
-    console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+    console.log(`${Time.stamp()} Successfully reloaded ${data.length} application (/) commands.`);
   } catch (error) {
     console.error(error);
   }

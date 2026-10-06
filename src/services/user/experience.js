@@ -69,7 +69,7 @@ export const history = async (interaction) => {
 
   const start = Date.now();
 
-  console.log("Scanning message history... this may take a while.");
+  console.log(`${Time.stamp()} Scanning message history... this may take a while.`);
 
   await interaction.reply({
     content: "Scanning message history... this may take a while.",
@@ -115,7 +115,7 @@ export const history = async (interaction) => {
       await Time.sleep();
     }
 
-    console.log(`Channel ${name} processed.`);
+    console.log(`${Time.stamp()} Channel ${name} processed.`);
   }
 
   const users = Array.from(map.entries());
@@ -124,8 +124,39 @@ export const history = async (interaction) => {
 
   const duration = Time.format(Date.now() - start);
 
-  console.log(`Message history catch-up complete in ${duration}. The saga has been recorded.`);
+  console.log(`${Time.stamp()} Message history catch-up complete in ${duration}. The saga has been recorded.`);
   user.send(`Message history catch-up complete in ${duration}. The saga has been recorded.`);
+};
+
+const align = async (member, experience, ranks) => {
+  const { id, displayName } = member;
+
+  const floor = await Rank.floor(experience);
+  if (!floor) return false;
+
+  const { id: rank, title } = floor;
+
+  const held = ranks.find((rank) => member.roles.cache.has(rank));
+
+  if (held === rank) return !!console.log(`${Time.stamp()} Promotion skipped for ${displayName}: ${rank} to ${held}`);
+
+  await Role.swap(member, ranks, rank);
+
+  console.log(`${Time.stamp()} ${displayName}'s role updated to ${title}.`);
+  return true;
+};
+
+export const restore = async (member) => {
+  const { id, user } = member;
+  if (user.bot) return;
+
+  const stored = await User.one(id);
+  if (!stored) return;
+
+  const list = await Rank.list();
+  const ranks = list.map(({ id }) => id);
+
+  await align(member, stored.experience, ranks);
 };
 
 export const promote = async (interaction) => {
@@ -134,7 +165,7 @@ export const promote = async (interaction) => {
 
   const start = Date.now();
 
-  console.log("Updating roles from stored experience...");
+  console.log(`${Time.stamp()} Updating roles from stored experience...`);
   await interaction.reply({
     content: "Updating roles from stored experience...",
     flags: MessageFlags.Ephemeral
@@ -151,34 +182,16 @@ export const promote = async (interaction) => {
     if (!member) {
       const { users } = client;
       const { username } = await users.fetch(id);
-      console.log(`Member not found: ${username} ${id}`);
+      console.log(`${Time.stamp()} Member not found: ${username} ${id}`);
       continue;
     }
 
-    const { displayName } = member;
-
-    if (IMMORTALS.split(",").includes(id)) {
-      console.log(`Change prevented for ${displayName}.`);
-      continue;
-    }
-
-    const { id: rank, title } = await Rank.floor(experience);
-
-    const held = ranks.find((rank) => member.roles.cache.has(rank));
-
-    if (held === rank) {
-      console.log(`Promotion skipped for ${displayName}: ${rank} to ${held}`);
-      continue;
-    }
-
-    await Role.swap(member, ranks, rank);
-
-    console.log(`${displayName}'s role updated to ${title}.`);
-    await Time.sleep();
+    const updated = await align(member, experience, ranks);
+    if (updated) await Time.sleep();
   }
 
   const duration = Time.format(Date.now() - start);
 
-  console.log(`Promotion sync complete in ${duration}.`);
+  console.log(`${Time.stamp()} Promotion sync complete in ${duration}.`);
   await user.send(`Promotion sync complete in ${duration}.`);
 };

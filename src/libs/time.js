@@ -9,6 +9,8 @@ export const format = (ms) => {
 
 export const sleep = (ms = 300) => new Promise((r) => setTimeout(r, ms));
 
+export const stamp = () => `[${new Date().toISOString().slice(0, 19)}]`;
+
 export const standardize = (date) => Math.floor(date.getTime() / 1000);
 
 export const labels = {

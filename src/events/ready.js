@@ -1,10 +1,11 @@
 import { Events } from "discord.js";
 import * as Invites from "@/services/invites";
+import * as Time from "@/libs/time";
 
 const name = Events.ClientReady;
 const kind = "once";
 const execute = async (client) => {
-  console.log(`[${new Date().toISOString().slice(0, 19)}] Ready! Logged in as ${client.user.tag}`);
+  console.log(`${Time.stamp()} Ready! Logged in as ${client.user.tag}`);
 
   Invites.collect(client);
 };
