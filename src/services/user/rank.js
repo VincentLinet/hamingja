@@ -85,9 +85,7 @@ export const individual = async (interaction) => {
   // Avatar decoration
   const decorationURL = member.displayAvatarDecorationURL();
 
-  const decoration = decorationURL
-    ? await Canvas.loadImage(`${decorationURL}?size=256&passthrough=false`).catch(() => null)
-    : null;
+  const decoration = decorationURL ? await Canvas.loadImage(`${decorationURL}?size=256&passthrough=false`) : null;
 
   // Circle avatar
   ctx.save();

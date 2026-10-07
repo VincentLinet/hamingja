@@ -1,6 +1,7 @@
 import { AuditLogEvent } from "discord.js";
 import * as Leave from "@/templates/leave";
 import * as Hammer from "@/services/hammer";
+import * as Birthday from "@/services/user/birthday";
 
 const { LOG_LEAVE } = process.env;
 
@@ -28,6 +29,8 @@ const kicked = async (guild, user) => {
 export const execute = async (member) => {
   const { guild, user } = member;
   const { id } = user;
+
+  await Birthday.forget(member);
 
   if (await banned(guild, id)) return Hammer.ban(member);
   if (await kicked(guild, id)) return Hammer.kick(member);

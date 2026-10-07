@@ -1,13 +1,24 @@
 import { Events } from "discord.js";
 import * as Errors from "@/core/errors";
 import * as Report from "@/services/report";
+import * as Birthday from "@/services/user/birthday";
 
 const name = Events.InteractionCreate;
 const kind = "on";
 
+const available = (interaction) => {
+  const command = interaction.isChatInputCommand();
+  const autocomplete = interaction.isAutocomplete();
+  const user = interaction.isUserContextMenuCommand();
+  const message = interaction.isMessageContextMenuCommand();
+  return [command, autocomplete, user, message].some(Boolean);
+};
+
 const execute = async (interaction) => {
-  if (interaction.isModalSubmit() && interaction.customId.startsWith("report")) return Report.submit(interaction);
-  if (!interaction.isChatInputCommand() && !interaction.isAutocomplete() && !interaction.isUserContextMenuCommand() && !interaction.isMessageContextMenuCommand()) return;
+  const { customId: id } = interaction;
+  if (interaction.isModalSubmit() && id.startsWith("report")) return Report.submit(interaction);
+  if (interaction.isModalSubmit() && id === "birthday") return Birthday.submit(interaction);
+  if (!available(interaction)) return;
 
   const { client, commandName: name } = interaction;
 
