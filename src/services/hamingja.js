@@ -2,7 +2,15 @@ import * as Action from "@/messages/hamingja";
 import * as Locale from "@/services/locale";
 import * as Role from "@/services/user/role";
 
-const { CACTI } = process.env;
+const { CACTI, DEM, AX, MARC, TUGDUAL } = process.env;
+
+const GUESTS = [
+  { id: CACTI, pool: "Cacti" },
+  { id: DEM, pool: "Dem" },
+  { id: AX, pool: "Ax" },
+  { id: MARC, pool: "Marc" },
+  { id: TUGDUAL, pool: "Tugdual" }
+];
 
 const pick = (pool) => pool[Math.floor(Math.random() * pool.length)];
 
@@ -15,14 +23,12 @@ export const answer = async (message) => {
   if (bot || everyone) return;
   if (!mentions.has(user, { ignoreRepliedUser: true })) return;
 
-  const cacti = id === CACTI;
+  const guest = GUESTS.find((entry) => entry.id === id);
 
-  if (!cacti && Role.shield(member)) return;
+  if (!guest && Role.shield(member)) return;
 
   const locale = Locale.of(channel);
-  const { Members, Cacti } = Action.load(locale);
+  const pools = Action.load(locale);
 
-  const pool = cacti ? Cacti : Members;
-
-  await message.reply(`*${pick(pool)}*`);
+  await message.reply(`*${pick(pools[guest?.pool ?? "Members"])}*`);
 };
