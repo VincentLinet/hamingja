@@ -14,7 +14,7 @@ const ACTIONS = [
   "You lean close and whisper something Hamingja alone should hear, and their eyes gleam with wicked, delighted agreement.",
   "Hamingja tilts their head at your murmured scheme, considers it for exactly one heartbeat, and is already gone to cause it.",
   "Something passes between you and Hamingja in a whisper too low for anyone else to catch, like a mischievous omen.",
-  "You cup a hand to Hamingja's ear, and they nod along like they understood every word — which they probably did, and which might worry anyone watching.",
+  "You cup a hand to Hamingja's ear, and they nod along like they understood every word, which they probably did, and which might worry anyone watching.",
   "Hamingja lands squarely between your antlers and refuses every attempt to be shooed off, claiming the perch as a throne.",
   "A ribbon appears knotted around one antler tine, tied there while you weren't looking, by someone with far too much patience for feathers.",
   "Hamingja swings from tine to tine like the antlers were built for their amusement, and honestly, maybe they were.",
@@ -31,7 +31,7 @@ const ACTIONS = [
   "Hamingja taps their beak against the axe, unable to decide if it's stone or wood underneath, and settles for stealing the bone fittings instead.",
   "You speak before the assembly, grave and measured, and Hamingja echoes your last words back in a pitch-perfect mockery of your own voice, ruining the gravity of the moment entirely.",
   "Hamingja hangs from a single braid of your beard, swinging gently, entirely unconcerned with the dignity of the arrangement.",
-  "You find a bead threaded into your beard that isn't yours, and Hamingja perched nearby looking far too proud of the craftsmanship.",
+  "You find a bead threaded into your beard that isn't yours, and Hamingja perched nearby looking far too proud of the craftsmanship."
 ];
 
 export default ACTIONS;

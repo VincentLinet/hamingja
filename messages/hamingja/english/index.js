@@ -205,3 +205,5 @@ export { default as Cacti } from "./cacti";
 export { default as Dem } from "./dem";
 export { default as Ax } from "./ax";
 export { default as Marc } from "./marc";
+export { default as Ranks } from "./ranks";
+export { default as Classes } from "./classes";

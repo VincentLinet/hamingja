@@ -92,7 +92,7 @@ export const Members = [
   "Hamingja se perche au bord de la scène, une aile levée comme en salut, puis la replie.",
   "Un souffle de plumes passe tout près au-dessus, et les torches vacillent comme dans un vent qui n'existe pas.",
   "Les yeux de Hamingja se plissent, à peine, face à quelque chose que lui seul voit bouger dans la foule.",
-  "L'oiseau laisse échapper une note basse et intime, destinée à personne, et à tout le monde, puis à plus rien du tout.",
+  "L'oiseau laisse échapper un ton bas et intime, destinée à personne, et à tout le monde, puis à plus rien du tout.",
   "Hamingja se love dans le creux d'une branche, ferme les yeux, et a disparu quand tu regardes à nouveau.",
   "Tu sens la légère pression d'une serre sur ton épaule, douce comme un rappel, puis il ne reste que le vent.",
   "La forme de Hamingja se brouille sur les bords, plume et ombre et quelque chose de plus ancien, avant de se stabiliser et de partir.",
@@ -204,3 +204,5 @@ export const Members = [
 export { default as Cacti } from "./cacti";
 export { default as Dem } from "./dem";
 export { default as Tugdual } from "./tugdual";
+export { default as Ranks } from "./ranks";
+export { default as Classes } from "./classes";

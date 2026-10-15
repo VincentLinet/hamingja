@@ -26,7 +26,7 @@ const ACTIONS = [
   //   "Hamingja tucks themself into the warmth beneath your braid, and for a long moment, neither of you moves.",
   //   "You kneel beside an exhausted hound without a word of command, and Hamingja lands beside you as if drawn by the same quiet.",
   //   "Hamingja leans their head into your palm the way a hound leans into an offered hand, open and unafraid.",
-  "Hamingja leaves a single dark feather, blue and violet, in your hand — far bigger than any of their own, but perfect for braiding into a plait.",
+  "Hamingja leaves a single dark feather, blue and violet, in your hand, far bigger than any of their own, but perfect for braiding into a plait.",
   "Hamingja perches on your armored gauntlet through the whole fire-song, warm and unbothered by the weight of armor beneath them.",
   "Hamingja settles on your shoulder and stays there, utterly unhurried, as if finally, somewhere, they didn't have to be silent to be understood.",
   //   "Across the crowded fire, Hamingja catches your eye for exactly one heartbeat, says nothing, and somehow that's enough.",
