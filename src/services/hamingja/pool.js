@@ -14,6 +14,12 @@ export const cumulative = (ranks, member, pools) => {
   return titles.flatMap((title) => pools.Ranks?.find((rank) => rank.title === title)?.actions ?? []);
 };
 
+export const current = (ranks, member, pools) => {
+  const cursor = tier(ranks, member);
+  if (cursor === -1) return [];
+  return pools.Ranks?.find((rank) => rank.title === ranks[cursor].title)?.actions ?? [];
+};
+
 export const assigned = (jobs, member, pools) => {
   const current = jobs.find(({ id }) => member.roles.cache.has(id));
   if (!current) return [];

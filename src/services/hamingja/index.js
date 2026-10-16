@@ -7,8 +7,8 @@ import * as Pool from "@/services/hamingja/pool";
 const { CACTI, DEM, AX, MARC, TUGDUAL } = process.env;
 
 const GUESTS = [
-  { id: CACTI, pool: "Cacti" },
-  { id: DEM, pool: "Dem" },
+  { id: CACTI, pool: "Cacti", ranks: "current" },
+  { id: DEM, pool: "Dem", ranks: "current" },
   { id: AX, pool: "Ax" },
   { id: MARC, pool: "Marc" },
   { id: TUGDUAL, pool: "Tugdual" }
@@ -63,9 +63,11 @@ export const answer = async (message) => {
   const ranks = await Pool.ranks();
   const jobs = await Pool.jobs();
 
+  const ranked = guest?.ranks === "current" ? Pool.current(ranks, member, pools) : Pool.cumulative(ranks, member, pools);
+
   const unlocked = [
     ...(guest ? pools[guest.pool] : pools.Members),
-    ...Pool.cumulative(ranks, member, pools),
+    ...ranked,
     ...Pool.assigned(jobs, member, pools)
   ];
 

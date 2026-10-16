@@ -43,7 +43,8 @@ const RANKS = [
       "Hours into your post, you haven't moved an inch, and neither has Hamingja.",
       "Hamingja seems to trust your watch enough to doze, undefended, within arm's reach of you.",
       "A silhouette peels away from a bush in the distance, enough to worry you, until you realize it's only Hamingja, testing whether you're truly watching.",
-      "After a watch that leaves your nerves worn thin, you find a single scorched twig by your boot, pulled from a fire that's long since gone cold."
+      "After a watch that leaves your nerves worn thin, you find a single scorched twig by your boot, pulled from a fire that's long since gone cold.",
+      "Hamingja flaps wildly in front of you, jabbing one wing toward %anyone and shrieking something urgent and wordless, acting out the whole emergency in increasingly frantic charades until you finally catch on."
     ]
   },
   {
@@ -92,7 +93,13 @@ const RANKS = [
       "Reminded of a secret you've kept well, you catch Hamingja's eye and read approval in it, from the one who keeps secrets better than anyone.",
       "You cross the Inner Circle's quietest hall without a sound, and Hamingja doesn't so much as startle.",
       "Hamingja lifts a seal right off the council table in the middle of the meeting, then drops it back exactly where it was, just to see if anyone noticed it was ever gone.",
-      "After a secret proves heavier to carry than you expected, you find a small, sealed scrap of parchment under your pillow, blank inside, as if offering to hold part of the weight instead."
+      "After a secret proves heavier to carry than you expected, you find a small, sealed scrap of parchment under your pillow, blank inside, as if offering to hold part of the weight instead.",
+      "You watch Hamingja toss an eggshell over their head, catching it square across their beak like a tiny mask, and let out a triumphant, unmistakable VUOLAAAA.",
+      "Hamingja stomps across the table on two legs, wings pinned stiff and tiny at their sides, echoing a familiar roar, coming out sounding like DINOTHAUR.",
+      "Hamingja drops a raw scrap of meat into your cup and stirs it in with one violent shake of their head, visibly proud of a recipe they've clearly watched someone else swear by.",
+      "Hamingja rises onto their toes, wings bent and raised like a mantis's forearms, swaying through a slow, deliberate rhythm unmistakably borrowed from someone else's signature dance.",
+      "You find a pickle resting beside your hand. Then another. Then a third. Then an entire mountain of them, and <@112673090038743040> storming after Hamingja, with an upset face.",
+      "Hamingja tips whatever's within reach into your water, a petal, an acorn, something unidentifiable, each one dropped in with the utter confidence of a recipe being perfected.* Good soup !*."
     ]
   },
   {

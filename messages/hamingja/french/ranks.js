@@ -92,7 +92,15 @@ const RANKS = [
       "Au souvenir d'un secret que tu as bien gardé, tu croises le regard de Hamingja et y lis une approbation, venant de celui qui garde les secrets mieux que quiconque.",
       "Tu traverses le couloir le plus silencieux du Cercle Restreint sans un bruit, et Hamingja ne sursaute même pas.",
       "Hamingja soulève un sceau directement sur la table du conseil en pleine réunion, puis le repose exactement à sa place, juste pour voir si quelqu'un remarquera qu'il a disparu.",
-      "Après qu'un secret s'est révélé plus lourd à porter que prévu, tu trouves un petit morceau de parchemin scellé sous ton oreiller, vierge à l'intérieur, comme pour t'offrir d'en porter une part à ta place."
+      "Après qu'un secret s'est révélé plus lourd à porter que prévu, tu trouves un petit morceau de parchemin scellé sous ton oreiller, vierge à l'intérieur, comme pour t'offrir d'en porter une part à ta place.",
+      "Tu regardes Hamingja lancer une coquille d'œuf par-dessus sa tête, la rattrapant pile sur son bec comme un petit masque, et pousser un VUOLAAAA triomphant et parfaitement reconnaissable.",
+      "Hamingja arpente la table sur deux pattes, les ailes raides et minuscules plaquées contre son corps, répétant un rugissement familier qui ressort en quelque chose comme DINOTHAUR.",
+      "Hamingja laisse tomber un morceau de viande crue dans ta coupe et le mélange d'un violent coup de tête, visiblement fier d'une recette qu'iel a clairement vu quelqu'un d'autre jurer être infaillible.",
+      "Hamingja se dresse sur la pointe des pattes, les ailes pliées et levées comme les pattes antérieures d'une mante religieuse, se balançant sur un rythme lent et appliqué, manifestement emprunté à la danse signature de quelqu'un d'autre.",
+      "Tu trouves un cornichon posé près de ta main. Puis un autre. Puis un troisième. Puis une montagne entière, et <@112673090038743040> qui déboule à la poursuite de Hamingja, le visage contrarié.",
+      "Hamingja verse tout ce qui lui tombe sous le bec dans ton eau, un pétale, un gland, quelque chose d'inidentifiable, chaque ajout déposé avec l'assurance totale d'une recette en train d'être perfectionnée.* Good soup !*.",
+      "Tu entends soudainement *Alors, le Motoc'!* derrière toi, et alors que tu penses tomber nez à nez avec Asrunn, tu ne trouves que Hamingja.",
+      "Quelqu'un au coin du feu crie *Je la worshipeeeeeuh*, mais aucun mouvement de lèvres ne semble prononcer cette phrase."
     ]
   },
   {
