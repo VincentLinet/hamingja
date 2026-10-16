@@ -40,8 +40,11 @@ export const leaderboard = (id) => {
   return Models.leaderboard(id);
 };
 
+const outranks = (member, ranks, target) =>
+  ranks.findLastIndex((rank) => member.roles.cache.has(rank)) >= ranks.indexOf(target);
+
 export const attribute = async (interaction) => {
-  const { author } = interaction;
+  const { author, member } = interaction;
   const { id, bot } = author;
   const { cooldown } = experience;
 
@@ -59,7 +62,14 @@ export const attribute = async (interaction) => {
   const candidate = await Rank.floor(stated);
   const { id: superior } = candidate;
 
-  if (superior !== rank) await Rank.promote(interaction, rank, candidate);
+  if (superior === rank) return;
+
+  const list = await Rank.list();
+  const ranks = list.map(({ id }) => id);
+
+  if (outranks(member, ranks, superior)) return;
+
+  await Rank.promote(interaction, rank, candidate);
 };
 
 export const history = async (interaction) => {
@@ -129,16 +139,15 @@ export const history = async (interaction) => {
 };
 
 const align = async (member, experience, ranks) => {
-  const { id, displayName } = member;
+  const { displayName } = member;
 
   const floor = await Rank.floor(experience);
   if (!floor) return false;
 
   const { id: rank, title } = floor;
 
-  const held = ranks.find((rank) => member.roles.cache.has(rank));
-
-  if (held === rank) return !!console.log(`${Time.stamp()} Promotion skipped for ${displayName}: ${rank} to ${held}`);
+  if (outranks(member, ranks, rank))
+    return !!console.log(`${Time.stamp()} Promotion skipped for ${displayName}: ${title}`);
 
   await Role.swap(member, ranks, rank);
 
