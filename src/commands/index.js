@@ -8,6 +8,7 @@ export { default as birthday } from "./birthday";
 export { default as leaderboard } from "./leaderboard";
 export { default as ranks } from "./ranks";
 export { default as classes } from "./classes";
+export { default as rain } from "./rain";
 export { default as report } from "./report/command";
 export { default as reportUser } from "./report/user";
 export { default as reportMessage } from "./report/message";
