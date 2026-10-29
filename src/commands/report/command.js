@@ -4,7 +4,7 @@ import * as Report from "@/services/report";
 const data = new Discord.SlashCommandBuilder()
   .setName("report")
   .setDescription("Submit a report.")
-  .setContexts(Discord.InteractionContextType.Guild)
+  .setContexts(Discord.InteractionContextType.Guild, Discord.InteractionContextType.BotDM)
   .addUserOption((option) =>
     option.setName("user").setDescription("User you are reporting").setRequired(false)
   )

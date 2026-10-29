@@ -8,6 +8,7 @@ import * as Locale from "@/services/locale";
 import * as Strings from "@/services/strings";
 import * as User from "@/services/user";
 import * as Experience from "@/services/user/experience";
+import * as Member from "@/services/user/member";
 
 import config from "config";
 
@@ -36,7 +37,11 @@ const truncate = (text, ctx) =>
   Array.from(text).findIndex((_, index) => ctx.measureText(`${text.slice(0, index + 1)}...`).width > 450);
 
 export const individual = async (interaction) => {
-  const { member, guild, options, channelId: channel } = interaction;
+  const { options, channelId: channel } = interaction;
+
+  const member = await Member.resolve(interaction);
+  if (!member) return Member.absent(interaction);
+
   const { id, roles, displayName } = member;
 
   const show = options.getBoolean("public") ?? false;

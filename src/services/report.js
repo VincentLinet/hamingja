@@ -69,8 +69,7 @@ export const open = async (interaction, { user, anonymous, message } = {}) => {
 };
 
 export const submit = async (interaction) => {
-  const { guild, customId, user, fields } = interaction;
-  const { channels } = guild ?? {};
+  const { client, customId, user, fields } = interaction;
   const [, userId] = customId.split(":");
 
   const text = fields.getTextInputValue("user").trim();
@@ -87,7 +86,8 @@ export const submit = async (interaction) => {
 
   const mention = userId ? `<@${userId}>` : (text || null);
 
-  const channel = channels?.cache.get(LOG_REPORTS);
+  // Read from the client cache, reports sent from DMs have no guild
+  const channel = client.channels.cache.get(LOG_REPORTS);
   if (channel) await channel.send(Report.message(user, anonymous, mention, link || null, complaint || null));
 
   await interaction.reply({

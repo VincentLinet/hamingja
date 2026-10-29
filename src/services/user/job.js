@@ -7,18 +7,16 @@ import * as Locale from "@/services/locale";
 import * as Role from "@/services/user/role";
 import * as Experience from "@/services/user/experience";
 import * as Rank from "@/services/user/rank";
+import * as Member from "@/services/user/member";
 
 import config from "config";
 
 const { experience } = config;
 const { choice } = experience;
 
-const { MessageFlags, ComponentType } = Discord;
-const { StringSelect, Button } = ComponentType;
+const { MessageFlags } = Discord;
 
 const IDLE = 120_000;
-
-const Collector = {};
 
 const pattern = (interaction, name, injections) => Pattern.build(["job", Locale.of(interaction.channelId)], name, injections);
 
@@ -50,15 +48,15 @@ const selection = async (interaction, classes, channel, mode = "edition") => {
 const refusal = async (interaction) => {
   const title = await pattern(interaction, "title");
   const description = await pattern(interaction, "refusal");
-  await interaction.update(Message.build({ title, description, components: [] }));
+  return Message.build({ title, description, components: [] });
 };
 
 export const list = async (locale) => {
   return Models.list(locale);
 };
 
-export const chose = async (interaction, direct) => {
-  const { author = {}, member, channelId: channel } = interaction;
+export const chose = async (interaction, direct, member = interaction.member) => {
+  const { author = {}, channelId: channel } = interaction;
   const { displayName } = member;
   const { username } = author;
   const display = displayName || username;
@@ -70,14 +68,14 @@ export const chose = async (interaction, direct) => {
 
   const response = await selection(interaction, classes, dm, "creation");
 
-  Collector.select = response.createMessageComponentCollector({ componentType: StringSelect, IDLE });
-  Collector.button = response.createMessageComponentCollector({ componentType: Button, IDLE });
+  // One collector for the whole flow, so the idle timer resets on any click
+  const collector = response.createMessageComponentCollector({ idle: IDLE });
 
-  Collector.select.on("collect", async (interaction) => {
-    const { values, customId } = interaction;
-    const [value] = values;
+  collector.on("collect", async (interaction) => {
+    const { customId } = interaction;
 
     if (customId === "job") {
+      const [value] = interaction.values;
       const { title, short, long } = classes[value];
       job = value;
       const description = long || short;
@@ -96,15 +94,8 @@ export const chose = async (interaction, direct) => {
       const components = [new Discord.ActionRowBuilder({ components: [accept, back, cancel] })];
       await interaction.update(Message.build({ title, description, components }));
     }
-  });
-
-  Collector.select.on("end", async (interaction) => {
-    await refusal(interaction);
-  });
-
-  Collector.button.on("collect", async (interaction) => {
-    const { customId } = interaction;
     if (customId === "accept") {
+      collector.stop("accept");
       const { id, title: path, long } = classes[job];
       const title = await pattern(interaction, "accepted");
       const description = await pattern(interaction, "accept", { path, long, user: display });
@@ -116,8 +107,13 @@ export const chose = async (interaction, direct) => {
       await selection(interaction, classes);
     }
     if (customId === "cancel") {
-      await refusal(interaction);
+      collector.stop("cancel");
+      await interaction.update(await refusal(interaction));
     }
+  });
+
+  collector.on("end", async (_, reason) => {
+    if (reason === "idle") await response.edit(await refusal(interaction));
   });
 };
 
@@ -132,5 +128,9 @@ export const manual = async (interaction) => {
   const content = await pattern(interaction, "inexperienced");
   const inexperienced = { content, flags: MessageFlags.Ephemeral };
   if (current < experience) return interaction.reply(inexperienced);
-  await chose(interaction, true);
+
+  const member = await Member.resolve(interaction);
+  if (!member) return Member.absent(interaction);
+
+  await chose(interaction, true, member);
 };

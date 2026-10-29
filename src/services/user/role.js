@@ -14,8 +14,9 @@ export const remove = (member, role) => {
   member.roles.remove(role);
 };
 
-export const swap = (member, removal, addition) => {
-  const removed = Array.isArray(removal) ? removal.filter((role) => role !== addition) : removal;
-  remove(member, removed);
-  add(member, addition);
+// A single set avoids a concurrent remove overwriting the addition with a stale role list
+export const swap = async (member, removal, addition) => {
+  const removed = [removal].flat();
+  const kept = member.roles.cache.filter(({ id }) => !removed.includes(id) && id !== addition).map(({ id }) => id);
+  await member.roles.set([...kept, addition]);
 };
