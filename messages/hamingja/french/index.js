@@ -206,3 +206,4 @@ export { default as Dem } from "./dem";
 export { default as Tugdual } from "./tugdual";
 export { default as Ranks } from "./ranks";
 export { default as Classes } from "./classes";
+export { default as Samhain } from "./samhain";

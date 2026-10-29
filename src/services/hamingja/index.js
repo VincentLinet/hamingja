@@ -3,6 +3,7 @@ import * as Locale from "@/services/locale";
 import * as Role from "@/services/user/role";
 import * as Strings from "@/services/strings";
 import * as Pool from "@/services/hamingja/pool";
+import * as Season from "@/services/hamingja/season";
 
 const { CACTI, DEM, AX, MARC, TUGDUAL } = process.env;
 
@@ -63,15 +64,18 @@ export const answer = async (message) => {
   const ranks = await Pool.ranks();
   const jobs = await Pool.jobs();
 
+  const event = Season.active();
+
   const ranked = guest?.ranks === "current" ? Pool.current(ranks, member, pools) : Pool.cumulative(ranks, member, pools);
 
-  const unlocked = [
-    ...(guest ? pools[guest.pool] : pools.Members),
-    ...ranked,
-    ...Pool.assigned(jobs, member, pools)
-  ];
+  const unlocked = event
+    ? (pools[event.pool] ?? [])
+    : [...(guest ? pools[guest.pool] : pools.Members), ...ranked, ...Pool.assigned(jobs, member, pools)];
 
-  const entries = unlocked.map((line) => eligible(ranks, jobs, guild, member, line)).filter(Boolean);
+  const resolved = (lines) => lines.map((line) => eligible(ranks, jobs, guild, member, line)).filter(Boolean);
+
+  const primary = resolved(unlocked);
+  const entries = primary.length ? primary : resolved(pools.Members);
 
   if (entries.length === 0) return;
 

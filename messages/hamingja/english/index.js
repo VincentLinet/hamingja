@@ -207,3 +207,4 @@ export { default as Ax } from "./ax";
 export { default as Marc } from "./marc";
 export { default as Ranks } from "./ranks";
 export { default as Classes } from "./classes";
+export { default as Samhain } from "./samhain";
