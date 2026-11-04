@@ -7,7 +7,8 @@
     "start": "nodemon dist/main.cjs",
     "build": "node esbuild.config.js",
     "dev": "NODE_ENV=development yarn build & yarn start",
-    "refresh": "yarn build && node dist/scripts/commands/refresh.cjs"
+    "refresh": "yarn build && node dist/scripts/commands/refresh.cjs",
+    "refresh:prod": "pm2 deploy ecosystem.config.cjs production exec 'yarn refresh'"
   },
   "dependencies": {
     "@napi-rs/canvas": "^1.0.0",
