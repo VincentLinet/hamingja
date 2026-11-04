@@ -4,6 +4,7 @@ import * as Role from "@/services/user/role";
 import * as Strings from "@/services/strings";
 import * as Pool from "@/services/hamingja/pool";
 import * as Season from "@/services/hamingja/season";
+import * as Birthday from "@/services/user/birthday";
 
 const { CACTI, DEM, AX, MARC, TUGDUAL } = process.env;
 
@@ -65,12 +66,15 @@ export const answer = async (message) => {
   const jobs = await Pool.jobs();
 
   const event = Season.active();
+  const celebrating = await Birthday.born(id);
 
   const ranked = guest?.ranks === "current" ? Pool.current(ranks, member, pools) : Pool.cumulative(ranks, member, pools);
 
-  const unlocked = event
-    ? (pools[event.pool] ?? [])
-    : [...(guest ? pools[guest.pool] : pools.Members), ...ranked, ...Pool.assigned(jobs, member, pools)];
+  const unlocked = (() => {
+    if (celebrating) return pools.Birthday ?? [];
+    if (event) return pools[event.pool] ?? [];
+    return [...(guest ? pools[guest.pool] : pools.Members), ...ranked, ...Pool.assigned(jobs, member, pools)];
+  })();
 
   const resolved = (lines) => lines.map((line) => eligible(ranks, jobs, guild, member, line)).filter(Boolean);
 

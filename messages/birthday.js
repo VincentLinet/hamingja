@@ -5,6 +5,10 @@ export default {
   notice:
     "-# Hamingja will store your birthday (day and month only) and timezone to wish you a happy birthday publicly in the server. You can remove it at any time with `/birthday remove`, and it is deleted if you leave the server.",
   invalid:"Hamingja looks at you, awaiting for you to stop joking.",
+  today: "Hamingja flutters proudly through the hall: today belongs to %users !",
+  none: "Hamingja checks the whole roost. No birthdays today.",
+  unauthorized: "Hamingja doesn't trust you with that list.",
+  empty: "Hamingja has no birthdays written down yet.",
   wishes: [
     "Hamingja lands on the highest branch of the hall and sings a long, bright note. Today is <@%user>'s birthday ! May the Norns weave you a fine year. 🎂",
     "A starling drops a small, glowing feather into the lap of <@%user>. Hamingja has not forgotten : happy birthday ! 🎉",

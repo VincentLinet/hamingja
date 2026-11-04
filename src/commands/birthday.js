@@ -13,7 +13,11 @@ const data = new Discord.SlashCommandBuilder()
   .addSubcommand((subcommand) =>
     subcommand.setName("set").setDescription("Register your birthday so Hamingja can celebrate it.")
   )
-  .addSubcommand((subcommand) => subcommand.setName("remove").setDescription("Forget your birthday."));
+  .addSubcommand((subcommand) => subcommand.setName("remove").setDescription("Forget your birthday."))
+  .addSubcommand((subcommand) =>
+    subcommand.setName("today").setDescription("See who's celebrating their birthday today.")
+  )
+  .addSubcommand((subcommand) => subcommand.setName("list").setDescription("List every registered birthday."));
 
 const execute = async (interaction) => {
   if (!interaction.isChatInputCommand()) return;
@@ -22,6 +26,8 @@ const execute = async (interaction) => {
 
   if (subcommand === "set") return Birthday.open(interaction);
   if (subcommand === "remove") return Birthday.remove(interaction);
+  if (subcommand === "today") return Birthday.celebrating(interaction);
+  if (subcommand === "list") return Birthday.everyone(interaction);
 };
 
 export default { data, execute };

@@ -207,3 +207,4 @@ export { default as Tugdual } from "./tugdual";
 export { default as Ranks } from "./ranks";
 export { default as Classes } from "./classes";
 export { default as Samhain } from "./samhain";
+export { default as Birthday } from "./birthday";

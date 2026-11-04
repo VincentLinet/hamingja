@@ -56,7 +56,7 @@ const exists = (day, month) => new Date(Date.UTC(2000, month - 1, day)).getUTCDa
 
 const label = (day, month) => `${MONTHS[month - 1]} ${day}`;
 
-const today = (timezone, now = new Date()) =>
+const parts = (timezone, now = new Date()) =>
   new Intl.DateTimeFormat("en-EN", { timeZone: timezone, year: "numeric", month: "numeric", day: "numeric" })
     .formatToParts(now)
     .reduce((acc, { type, value }) => ({ ...acc, [type]: Number(value) }), {});
@@ -146,12 +146,50 @@ export const forget = async ({ id }) => {
   return Models.remove(id);
 };
 
+export const born = async (id) => {
+  const birthday = await Models.one(id);
+  if (!birthday) return false;
+  return matches(birthday, parts(birthday.timezone));
+};
+
+export const celebrating = async (interaction) => {
+  const { guild } = interaction;
+
+  const birthdays = await Models.list();
+  const due = birthdays.filter((birthday) => matches(birthday, parts(birthday.timezone)));
+
+  if (!due.length) return interaction.reply({ content: Data.none, flags });
+
+  const members = await guild.members.fetch({ user: due.map(({ user }) => user) });
+  const users = due.filter(({ user }) => members.has(user)).map(({ user }) => `<@${user}>`);
+
+  if (!users.length) return interaction.reply({ content: Data.none, flags });
+
+  await interaction.reply({ content: Strings.inject(Data.today, { users: users.join(", ") }), flags });
+};
+
+export const everyone = async (interaction) => {
+  const { member } = interaction;
+
+  if (!member?.permissions.has(Discord.PermissionFlagsBits.Administrator))
+    return interaction.reply({ content: Data.unauthorized, flags });
+
+  const birthdays = await Models.list();
+
+  if (!birthdays.length) return interaction.reply({ content: Data.empty, flags });
+
+  const sorted = [...birthdays].sort((a, b) => a.month - b.month || a.day - b.day);
+  const lines = sorted.map(({ user, day, month }) => `<@${user}>: ${label(day, month)}`);
+
+  await interaction.reply({ content: lines.join("\n"), flags });
+};
+
 const celebrate = async (client) => {
   const birthdays = await Models.list();
   const now = new Date();
 
   const due = birthdays
-    .map((birthday) => ({ ...birthday, local: today(birthday.timezone, now) }))
+    .map((birthday) => ({ ...birthday, local: parts(birthday.timezone, now) }))
     .filter(({ local, announced, ...birthday }) => matches(birthday, local) && announced !== local.year);
 
   if (!due.length) return;
