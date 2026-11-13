@@ -3,7 +3,7 @@ import * as Time from "@/libs/time";
 
 const color = 0xe74c3c;
 
-export const message = (member) => {
+export const message = (member, experience, rank) => {
   const { displayName, user, joinedAt: joined } = member;
   const { username, id, createdAt: created } = user;
 
@@ -17,6 +17,8 @@ export const message = (member) => {
     fields: [
       { name: "Global name", value: username, inline: false },
       { name: "User ID", value: id, inline: false },
+      { name: "Experience", value: `${experience}`, inline: true },
+      { name: "Rank", value: rank?.title ?? "none", inline: true },
       {
         name: "Account created",
         value: `<t:${Time.standardize(created)}:F> (<t:${Time.standardize(created)}:R>)`,

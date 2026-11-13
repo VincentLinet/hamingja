@@ -2,6 +2,8 @@ import { AuditLogEvent } from "discord.js";
 import * as Leave from "@/templates/leave";
 import * as Hammer from "@/services/hammer";
 import * as Birthday from "@/services/user/birthday";
+import * as User from "@/services/user";
+import * as Rank from "@/services/user/rank";
 
 const { LOG_LEAVE } = process.env;
 
@@ -38,5 +40,8 @@ export const execute = async (member) => {
   const channel = guild.channels.cache.get(LOG_LEAVE);
   if (!channel) return;
 
-  await channel.send(Leave.message(member));
+  const { experience = 0 } = (await User.one(id)) ?? {};
+  const rank = await Rank.floor(experience);
+
+  await channel.send(Leave.message(member, experience, rank));
 };
