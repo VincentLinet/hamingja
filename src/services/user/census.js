@@ -44,9 +44,12 @@ export const ranks = async (interaction) => {
     counted.findIndex(({ count }) => count > 0)
   );
 
-  const fields = counted
-    .slice(highest)
-    .map(({ title, count }) => ({ name: title, value: Strings.inject(text.holders, { count }) }));
+  const value = ({ count, pioneer }) =>
+    [Strings.inject(text.holders, { count }), pioneer && Strings.inject(text.pioneer, { member: `<@${pioneer}>` })]
+      .filter(Boolean)
+      .join("\n");
+
+  const fields = counted.slice(highest).map((rank) => ({ name: rank.title, value: value(rank) }));
 
   await interaction.reply({ ...Base.message({ title: text.ranks, description: text.hierarchy, fields }), flags });
 };

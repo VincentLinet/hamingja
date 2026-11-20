@@ -9,6 +9,12 @@ export const list = async () =>
   sql`SELECT *
     FROM rank ORDER BY experience ASC;`.execute();
 
+export const claim = async (id, user) =>
+  sql`UPDATE rank
+    SET pioneer = ${user}
+    WHERE id = ${id}
+      AND pioneer IS NULL;`.execute(({ affectedRows }) => affectedRows === 1);
+
 export const floor = async (experience) =>
   sql`SELECT *
     FROM rank

@@ -9,6 +9,7 @@ import * as Strings from "@/services/strings";
 import * as User from "@/services/user";
 import * as Experience from "@/services/user/experience";
 import * as Member from "@/services/user/member";
+import Data from "@/messages/rank";
 
 import config from "config";
 
@@ -191,6 +192,10 @@ export const promote = async (interaction, rank, superior) => {
   const channel = cache.get(FESTIVAL);
   await Role.swap(member, rank, id);
   if (id === choice) await Job.chose(interaction);
-  const content = Strings.inject(announce.replace("%member", "<@%member>"), { member: user });
-  await channel.send({ content });
+  const first = await Models.claim(id, user);
+  const announcement = Strings.inject(announce.replace("%member", "<@%member>"), { member: user });
+  const pioneer = Strings.inject(Data[Locale.of(FESTIVAL)].pioneer, { member: `<@${user}>`, rank: `<@&${id}>` });
+  const content = first ? `${announcement}\n${pioneer}` : announcement;
+  // The role is shown but must not ping everyone holding it
+  await channel.send({ content, allowedMentions: { users: [user] } });
 };
